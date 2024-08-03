@@ -10,7 +10,7 @@ public class Filme{
     public string? Diretor {get; set;}
     public int? Ano {get; set;}
     public string? CategoriaId {get; set;}
-    public  Categoria? categoria {get; set;}
+    public  Categoria? Categoria {get; set;}
     public string? Status {get; set;}
     public DateTime DataCadastro {get; set;}
 
