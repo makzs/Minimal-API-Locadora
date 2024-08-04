@@ -95,7 +95,7 @@ Content-Type: application/json
 GET http://localhost:5088/emprestimo/listar
 
 ### Deletar emprestimo
-DELETE http://localhost:5088/emprestimo/deletar/0ca87a35-099d-4cf8-8f55-5d826e0a65e1
+DELETE http://localhost:5088/emprestimo/deletar/f6bb9e81-8fa9-44ba-ac37-dfcf80bf44e9
 
 ### Alterar emprestimo
 PUT http://localhost:5088/emprestimo/atualizar/0ca87a35-099d-4cf8-8f55-5d826e0a65e1

@@ -9,6 +9,9 @@ import FilmeListar from './Components/Filme/Filme-Consultar';
 import FilmeCadastrar from './Components/Filme/Filme-Cadastrar';
 import FilmeDeletar from './Components/Filme/Filme-Deletar';
 import FilmeAlterar from './Components/Filme/Filme-Alterar';
+import EmprestimoListar from './Components/Emprestimo/Emprestimo-Consultar';
+import EmprestimoCadastrar from './Components/Emprestimo/Emprestimo-Cadastrar';
+import EmprestimoDeletar from './Components/Emprestimo/Emprestimo-Deletar';
 
 function App() {
   return (
@@ -67,6 +70,9 @@ function App() {
           <Route path='/pages/filme/cadastrar' element={<FilmeCadastrar />} />
           <Route path='/pages/filme/deletar' element={<FilmeDeletar />} />
           <Route path='/pages/filme/alterar/:id' element={<FilmeAlterar />} />
+          <Route path='/pages/emprestimo/listar' element={<EmprestimoListar />} />
+          <Route path='/pages/emprestimo/cadastrar' element={<EmprestimoCadastrar />} />
+          <Route path='/pages/emprestimo/deletar' element={<EmprestimoDeletar />} />
         </Routes>
       </BrowserRouter>      
       <footer className="footer">
