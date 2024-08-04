@@ -8,10 +8,10 @@ public class Emprestimo
 
     //Propriedades
 public string Id { get; set; }
-    public required string ClienteId { get; set; }
-    public required Cliente Cliente { get; set; }
-    public required string FilmeId { get; set; }
-    public required Filme Filme { get; set; }
+    public string? ClienteId { get; set; }
+    public Cliente? Cliente { get; set; }
+    public string? FilmeId { get; set; }
+    public Filme? Filme { get; set; }
     public DateTime DataEmprestimo { get; set; }
     public DateTime DataDevolucaoPrevista { get; set; }
     public string? StatusEmprestimo { get; set; }

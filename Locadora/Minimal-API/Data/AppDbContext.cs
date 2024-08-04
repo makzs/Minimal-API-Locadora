@@ -17,14 +17,19 @@ public class AppDbContext : DbContext
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Emprestimo>()
-            .HasOne(e => e.Cliente)
-            .WithMany()
-            .HasForeignKey(e => e.ClienteId);
+      modelBuilder.Entity<Filme>()
+        .HasOne(f => f.Categoria)
+        .WithMany()
+        .HasForeignKey(f => f.CategoriaId);
 
-        modelBuilder.Entity<Emprestimo>()
-            .HasOne(e => e.Filme)
-            .WithMany()
-            .HasForeignKey(e => e.FilmeId);
+      modelBuilder.Entity<Emprestimo>()
+          .HasOne(e => e.Cliente)
+          .WithMany()
+          .HasForeignKey(e => e.ClienteId);
+
+      modelBuilder.Entity<Emprestimo>()
+          .HasOne(e => e.Filme)
+          .WithMany()
+          .HasForeignKey(e => e.FilmeId);
     }
 }

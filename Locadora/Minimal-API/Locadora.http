@@ -5,8 +5,8 @@ POST http://localhost:5088/cliente/cadastrar
 Content-Type: application/json
 
 {
-    "nome": "Cliente1",
-    "endereco": "Rua do cliente 1",
+    "nome": "Cliente2",
+    "endereco": "Rua do cliente 2",
     "email": "cliente1@email.com",
     "telefone" : "99543-6421"
 }
@@ -29,6 +29,7 @@ Content-Type: application/json
     "telefone" : "99876-2222"
 }
 
+
 # FILMES #
 
 ### Criação de um novo Filme
@@ -36,17 +37,18 @@ POST http://localhost:5088/filme/cadastrar
 Content-Type: application/json
 
 {
-    "titulo": "Filme1",
-    "diretor": "Diretor do Filme 1",
+    "titulo": "Filme2",
+    "diretor": "Diretor do Filme 2",
     "ano": "2024",
-    "status" : "Alugado"
+    "status" : "Alugado",
+    "categoriaId" : "bd75bac1-cc3a-478a-9f96-fb920e02b3ec"
 }
 
 ### Listar todos os Filmes
 GET http://localhost:5088/filme/listar
 
 ### Deletar Filme
-DELETE http://localhost:5088/filme/deletar/ba6246a0-21f8-43f1-a67a-2de6ba9af63d
+DELETE http://localhost:5088/filme/deletar/60b94c70-d9d7-403c-957c-db0adb8c205d
 
 
 ### Alterar Filme
@@ -58,4 +60,47 @@ Content-Type: application/json
     "diretor": "Diretor do Filme Atualizado",
     "ano": "2023",
     "status" : "Disponivel"
+}
+
+
+# Categorias #
+
+### Listar Categorias
+GET http://localhost:5088/categoria/listar
+
+### Cadastrar Categoria
+POST http://localhost:5088/categoria/cadastrar
+Content-Type: application/json
+
+{
+    "nome" : "Romance"
+}
+
+### Deletar Categorias
+DELETE  http://localhost:5088/categoria/deletar/48e6d290-e9b5-40f3-a209-db388cd4bb1d
+
+
+# Emprestimos #
+
+### Cadastrar emprestimo
+POST http://localhost:5088/emprestimo/cadastrar
+Content-Type: application/json
+
+{
+    "ClienteId": "3a5cb99b-25fd-4534-83ad-8c5d7c4a373c",
+    "FilmeId": "40088950-32b6-4d4a-a02d-54d5f93527f4"
+}
+
+### Listar emprestimo
+GET http://localhost:5088/emprestimo/listar
+
+### Deletar emprestimo
+DELETE http://localhost:5088/emprestimo/deletar/0ca87a35-099d-4cf8-8f55-5d826e0a65e1
+
+### Alterar emprestimo
+PUT http://localhost:5088/emprestimo/atualizar/0ca87a35-099d-4cf8-8f55-5d826e0a65e1
+Content-Type: application/json
+
+{
+    "StatusEmprestimo": "devolvido"
 }

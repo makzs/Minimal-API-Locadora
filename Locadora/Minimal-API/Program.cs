@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using MinimalAPI;
 
@@ -98,13 +100,18 @@ app.MapPost("/filme/cadastrar", ([FromBody]  Filme novoFilme, [FromServices] App
 // listar Filmes
 app.MapGet("/filme/listar", ([FromServices] AppDbContext ctx) =>
 {
-    if (ctx.Filmes.Any())
+    var filmes = ctx.Filmes
+        .Include(f => f.Categoria)
+        .ToList();
+
+    if (filmes.Any())
     {
-        return Results.Ok(ctx.Filmes.ToList());
+        return Results.Ok(filmes);
     }
 
-    return Results.NotFound("Não existem Filmes registrados!");
+    return Results.NotFound("Não existem filmes registrados!");
 });
+
 
 // deletar Filme
 
@@ -147,5 +154,131 @@ app.MapPut("/filme/atualizar/{id}", ([FromRoute] string id, [FromBody] Filme Fil
 });
 
 // Fim CRUD Filmes
+
+// CRUD da entidade Categorias no banco de dados
+
+app.MapPost("/categoria/cadastrar", ([FromBody] Categoria categoria, [FromServices] AppDbContext ctx) =>
+{
+
+    ctx.Categorias.Add(categoria);
+    ctx.SaveChanges();
+    return Results.Created("", categoria);
+});
+
+app.MapGet("/categoria/listar",
+    ([FromServices] AppDbContext ctx) =>
+{
+    if (ctx.Categorias.Any())
+    {
+        return Results.Ok(ctx.Categorias.ToList());
+    }
+    return Results.NotFound("Não existem categorias registradas!");
+});
+
+app.MapDelete("/categoria/deletar/{id}", ([FromServices] AppDbContext ctx, [FromRoute] string id) =>
+{
+    Categoria? categoriaExistente = ctx.Categorias.FirstOrDefault(p => p.Id == id);
+
+        if (categoriaExistente == null)
+        {
+            return Results.NotFound("Categoria não encontrada.");
+        }
+
+        ctx.Categorias.Remove(categoriaExistente);
+        ctx.SaveChanges();
+
+        return Results.Ok("Categoria deletada com sucesso!");
+});
+
+// Fim CRUD Categorias
+
+// CRUD da entidade emprestimo no banco de dados
+
+app.MapGet("/emprestimo/listar", async ([FromServices] AppDbContext ctx) =>
+{
+    var emprestimos = await ctx.Emprestimos
+                              .Include(e => e.Cliente)
+                              .Include(e => e.Filme)
+                              .ToListAsync();
+
+    if (emprestimos.Any())
+    {
+        var emprestimosFormatados = emprestimos.Select(e => new
+        {
+            e.Id,
+            Cliente = e.Cliente != null ? new 
+            {
+                e.Cliente.Id,
+                e.Cliente.Nome
+            } : null,
+            Filme = e.Filme != null ? new
+            {
+                e.Filme.Id,
+                e.Filme.Titulo
+            } : null,
+            DataEmprestimo = e.DataEmprestimo.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
+            DataDevolucaoPrevista = e.DataDevolucaoPrevista.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
+            e.StatusEmprestimo
+        });
+
+        return Results.Ok(emprestimosFormatados);
+    }
+
+    return Results.NotFound("Não existem empréstimos registrados!");
+});
+
+
+
+app.MapPost("/emprestimo/cadastrar", ([FromServices] AppDbContext ctx, [FromBody] Emprestimo emprestimo) =>
+{
+
+    Cliente? cliente = ctx.Clientes.FirstOrDefault(l => l.Id == emprestimo.ClienteId);
+    Filme? filme = ctx.Filmes.FirstOrDefault(l => l.Id == emprestimo.FilmeId);
+
+    if (cliente is null || filme is null)
+    {
+        return Results.BadRequest("Cliente ou Filme não encontrado!");
+    }
+
+    emprestimo.Cliente = cliente;
+    emprestimo.Filme = filme;
+
+    ctx.Emprestimos.Add(emprestimo);
+    ctx.SaveChanges();
+    return Results.Created("Emprestimo cadastrado com sucesso! ", emprestimo);
+});
+
+app.MapPut("/emprestimo/atualizar/{id}", ([FromServices] AppDbContext ctx, string id) =>
+{
+    var emprestimo = ctx.Emprestimos.FirstOrDefault(e => e.Id == id);
+
+    if (emprestimo is null)
+    {
+        return Results.NotFound("Empréstimo não encontrado!");
+    }
+
+    emprestimo.StatusEmprestimo = "Devolvido";
+    ctx.SaveChanges();
+
+    return Results.Ok("Empréstimo devolvido!");
+});
+
+app.MapDelete("/emprestimo/deletar/{id}", ([FromServices] AppDbContext ctx, string id) =>
+{
+    var emprestimo = ctx.Emprestimos.FirstOrDefault(e => e.Id == id);
+
+    if (emprestimo is null)
+    {
+        return Results.NotFound("Empréstimo não encontrado!");
+    }
+
+    ctx.Emprestimos.Remove(emprestimo);
+    ctx.SaveChanges();
+
+    return Results.Ok("Empréstimo deletado com sucesso.");
+});
+
+
+
 
 app.Run();
