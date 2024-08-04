@@ -47,7 +47,10 @@ function ClienteAlterar(){
             {
                 // navega para um outro componente se tudo der certo
                 navigate("/pages/cliente/listar");
-            });
+            })
+            .catch((error) => {
+                console.error("Erro ao atualizar filme:", error);
+              });
             e.preventDefault();
     }
 

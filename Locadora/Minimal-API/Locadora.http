@@ -19,7 +19,7 @@ DELETE http://localhost:5088/cliente/deletar/0f168033-c4f5-406a-b86f-11fddc1f06d
 
 
 ### Alterar Cliente
-PUT http://localhost:5088/cliente/atualizar/Cliente1
+PUT http://localhost:5088/cliente/atualizar/52b1f572-d7b7-4423-8663-894250a614c7
 Content-Type: application/json
 
 {

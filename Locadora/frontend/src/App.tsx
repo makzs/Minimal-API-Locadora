@@ -5,6 +5,10 @@ import ClienteListar from './Components/Cliente/Cliente-Consultar';
 import ClienteCadastrar from './Components/Cliente/Cliente-Cadastrar';
 import ClienteDeletar from './Components/Cliente/Cliente-Deletar';
 import ClienteAlterar from './Components/Cliente/Cliente-Alterar';
+import FilmeListar from './Components/Filme/Filme-Consultar';
+import FilmeCadastrar from './Components/Filme/Filme-Cadastrar';
+import FilmeDeletar from './Components/Filme/Filme-Deletar';
+import FilmeAlterar from './Components/Filme/Filme-Alterar';
 
 function App() {
   return (
@@ -59,6 +63,10 @@ function App() {
           <Route path='/pages/cliente/cadastrar' element={<ClienteCadastrar />} />
           <Route path='/pages/cliente/deletar' element={<ClienteDeletar />} />
           <Route path='/pages/cliente/alterar/:id' element={<ClienteAlterar />} />
+          <Route path='/pages/filme/listar' element={<FilmeListar />} />
+          <Route path='/pages/filme/cadastrar' element={<FilmeCadastrar />} />
+          <Route path='/pages/filme/deletar' element={<FilmeDeletar />} />
+          <Route path='/pages/filme/alterar/:id' element={<FilmeAlterar />} />
         </Routes>
       </BrowserRouter>      
       <footer className="footer">

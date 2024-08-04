@@ -68,14 +68,14 @@ app.MapDelete("/cliente/deletar/{id}", ( [FromRoute] string id,
     });
 
 // alterar Cliente
-app.MapPut("/cliente/atualizar/{Nome}", ([FromRoute] string nome, [FromBody] Cliente clienteAtualizado, [FromServices] AppDbContext ctx) =>
+app.MapPut("/cliente/atualizar/{id}", ([FromRoute] string id, [FromBody] Cliente clienteAtualizado, [FromServices] AppDbContext ctx) =>
 {
 
-    Cliente? clienteExistente = ctx.Clientes.FirstOrDefault(c => c.Nome == nome);
+    Cliente? clienteExistente = ctx.Clientes.FirstOrDefault(c => c.Id == id);
 
     if (clienteExistente is null)
     {
-        return Results.NotFound("Nome requisitado nao encontrado na lista de clientes");
+        return Results.NotFound("Id requisitado nao encontrado na lista de clientes");
     }
 
     clienteExistente.Nome = clienteAtualizado.Nome;
@@ -147,7 +147,7 @@ app.MapPut("/filme/atualizar/{id}", ([FromRoute] string id, [FromBody] Filme Fil
 
     if (FilmeExistente is null)
     {
-        return Results.NotFound("Nome requisitado nao encontrado na lista de Filmes");
+        return Results.NotFound("Id requisitado nao encontrado na lista de Filmes");
     }
 
     FilmeExistente.Titulo = FilmeAtualizado.Titulo;
