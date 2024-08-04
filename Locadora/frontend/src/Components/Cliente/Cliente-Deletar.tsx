@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { Cliente } from "../../Models/Cliente";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-function ClienteListar(){
+function ClienteDeletar(){
 
+    const navigate = useNavigate();
     const[clientes, setClientes] = useState<Cliente[]>([]);
 
     useEffect(() =>
@@ -27,6 +31,17 @@ function ClienteListar(){
                     }
                 });
         }
+    function deletar(id: string) {
+        axios.delete(`http://localhost:5088/cliente/deletar/${id}`)
+            .then((resposta) => {
+                console.log("Livro deletado:", resposta.data);
+                carregarCliente();
+            })
+            .catch((error) => {
+                console.error("Erro ao deletar livro:", error);
+            });
+      }
+    
 
     return (
         <div>
@@ -52,7 +67,7 @@ function ClienteListar(){
                     background-color: #ddd;
                 }
             `}</style>
-            <h1>Lista de Clientes</h1>
+            <h1>Deletar Clientes</h1>
             <table>
                 <thead>
                     <tr>
@@ -62,6 +77,8 @@ function ClienteListar(){
                         <th>Email</th>
                         <th>Telefone</th>
                         <th>Data de Cadastro</th>
+                        <th>Deletar</th>
+                        <th>Alterar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,6 +90,10 @@ function ClienteListar(){
                             <td>{cliente.email}</td>
                             <td>{cliente.telefone}</td>
                             <td>{cliente.dataCadastro}</td>
+                            <td><button onClick={() => {deletar(cliente.id!);}} >Deletar</button></td>
+                            <td>
+                                <Link to={`/pages/cliente/alterar/${cliente.id}`}>Alterar</Link>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
@@ -81,4 +102,4 @@ function ClienteListar(){
     );
 }
 
-export default ClienteListar;
+export default ClienteDeletar;
