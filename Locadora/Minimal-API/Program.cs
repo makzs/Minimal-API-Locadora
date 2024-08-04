@@ -4,6 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using MinimalAPI;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// configurar a politica de CORS para liberar o acesso total
+builder.Services.AddCors(
+    options => options.AddPolicy("Acesso Total", configs => configs.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod())
+);
+
 builder.Services.AddDbContext<AppDbContext>();
 var app = builder.Build();
 
@@ -194,6 +200,7 @@ app.MapDelete("/categoria/deletar/{id}", ([FromServices] AppDbContext ctx, [From
 
 // CRUD da entidade emprestimo no banco de dados
 
+// Listar emprestimos
 app.MapGet("/emprestimo/listar", async ([FromServices] AppDbContext ctx) =>
 {
     var emprestimos = await ctx.Emprestimos
@@ -228,7 +235,7 @@ app.MapGet("/emprestimo/listar", async ([FromServices] AppDbContext ctx) =>
 });
 
 
-
+// cadastrar emprestimos
 app.MapPost("/emprestimo/cadastrar", ([FromServices] AppDbContext ctx, [FromBody] Emprestimo emprestimo) =>
 {
 
@@ -248,6 +255,7 @@ app.MapPost("/emprestimo/cadastrar", ([FromServices] AppDbContext ctx, [FromBody
     return Results.Created("Emprestimo cadastrado com sucesso! ", emprestimo);
 });
 
+// atualizar emprestimos
 app.MapPut("/emprestimo/atualizar/{id}", ([FromServices] AppDbContext ctx, string id) =>
 {
     var emprestimo = ctx.Emprestimos.FirstOrDefault(e => e.Id == id);
@@ -263,6 +271,7 @@ app.MapPut("/emprestimo/atualizar/{id}", ([FromServices] AppDbContext ctx, strin
     return Results.Ok("Empréstimo devolvido!");
 });
 
+// deletar emprestimos
 app.MapDelete("/emprestimo/deletar/{id}", ([FromServices] AppDbContext ctx, string id) =>
 {
     var emprestimo = ctx.Emprestimos.FirstOrDefault(e => e.Id == id);
@@ -278,7 +287,5 @@ app.MapDelete("/emprestimo/deletar/{id}", ([FromServices] AppDbContext ctx, stri
     return Results.Ok("Empréstimo deletado com sucesso.");
 });
 
-
-
-
+app.UseCors("Acesso Total");
 app.Run();
